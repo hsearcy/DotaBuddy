@@ -113,7 +113,7 @@ $('#reparse').click(function() {
 
 function cacheHeroesList(callback) {
     callback = callback || function() {};
-    request.get('http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v1?key='+steamApiKey, (err, res, body) => {
+    request.get('https://api.opendota.com/api/heroes', (err, res, body) => {
         if (err) {
             console.log(err);
             return callback(null);
@@ -300,13 +300,13 @@ function getMatchDetails(matchId, callback) {
     if (matchDetails.hasOwnProperty(matchId)) {
         callback(matchDetails[matchId]);
     } else {
-        request.get('http://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/v1?key='+steamApiKey+'&match_id='+matchId, (err, response, body) => {
+        request.get(' https://api.opendota.com/api/matches/' + matchId, (err, response, body) => {
             if (err || response.statusCode != 200) return setTimeout(function() {
                 getMatchDetails(matchId, callback);
             }, 2000);
             let res = JSON.parse(body);
-            matchDetails[matchId] = res.result;
-            callback(res.result);
+            matchDetails[matchId] = res;
+            callback(res);
         });
     }
 }
