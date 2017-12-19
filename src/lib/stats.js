@@ -123,7 +123,7 @@ function getHeroesList() {
 function getHeroById(id) {
     let heroesList = getHeroesList();
     let res = null;
-    for (let i = 0; i < heroesList.length; i++) {
+    for (let i = 0; i < heroesList.length; i++)  {
         let hero = heroesList[i];
         if (hero.id != id) continue;
         res = hero;
@@ -159,11 +159,7 @@ function renderPlayer(i, steamId, steamIds) {
             let res = yield playerSummariesResult;
             let player = res.profile;
             if (player === undefined || player.steamid != steamId.getSteamID64()) return;
-            if (i > 4) {
-                renderMatchHistory(steamIds.length, i, steamId, player, false);
-            } else {
-                renderMatchHistory(steamIds.length, i, steamId, player, true);
-            }
+            (i > 4) ? renderMatchHistory(steamIds.length, i, steamId, player, false) : renderMatchHistory(steamIds.length, i, steamId, player, true);
         } catch (err) {
             console.log(err);
         }
@@ -196,19 +192,27 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
             heroes: heroes,
             solo_mmr: 'N/A',
             party_mmr: 'N/A',
-            estimated_mmr: 'N/A'
+            estimated_mmr: 'N/A',
+            hero_roles: 'N/A',
         };
         try {
-            if (radiant) {
-                radiantVue.players.$set(playerIndex, playerObject);
-            } else {
-                direVue.players.$set(playerIndex-5, playerObject);
-            }
+            (radiant) ? radiantVue.players.$set(playerIndex, playerObject) : direVue.players.$set(playerIndex-5, playerObject);
         } catch (err) {
             console.log(err);
             return setTimeout(() => renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, callback), 2000);
         }
         updateMmr(playerObject, steamId);
+        let heroRoles = {
+            Carry: 0,
+            Disabler: 0,
+            Initiator: 0,
+            Jungler: 0,
+            Support: 0,
+            Durable: 0,
+            Nuker: 0,
+            Pusher: 0,
+            Escape: 0,
+        };
         for (let matchIndex = 0; matchIndex < result.length; matchIndex++) {
             let match = result[matchIndex];
             new Promise(resolve => {
@@ -230,6 +234,9 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
                 }
                 let hero = getHeroById(match.hero_id);
                 let heroName = hero.name.replace('npc_dota_hero_', '');
+                hero.roles.forEach(role => {
+                    heroRoles[role] += 1;
+                });
                 try {
                     playerObject.heroes.$set(matchIndex, {
                         img: 'http://cdn.dota2.com/apps/dota2/images/heroes/' + heroName + '_lg.png',
@@ -237,7 +244,7 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
                         win: win,
                         gpm: gpm,
                         xpm: xpm,
-                        match_id: match.match_id
+                        match_id: match.match_id,
                     });
                 } catch (err) {
                     console.log(err);
@@ -245,6 +252,7 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
                 }
             });            
         }
+        Vue.set(playerObject, 'hero_roles', heroRoles);
     });
 }
 
