@@ -147,7 +147,7 @@ function renderPlayers(steamIds) {
     updateServerLogStatus('Waiting for game to start...');
 }
 function renderPlayer(i, steamId, steamIds) {
-        co(function* () {
+    co(function* () {
         try {
             const playerSummariesResult = new Promise((resolve, reject) => {
                 request.get('https://api.opendota.com/api/players/' + steamId.accountid, (err, res, body) => {
@@ -180,7 +180,7 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
             result = yield matchHistoryResults;
         } catch (err) {
             console.log(err);
-            return setTimeout(() => renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, callback), 2000);
+            return setTimeout(() => renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, callback), 10000);
         }
         let heroes = [];
         for (let i = 0; i < 20; i++) {
@@ -199,7 +199,7 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
             (radiant) ? radiantVue.players.$set(playerIndex, playerObject) : direVue.players.$set(playerIndex-5, playerObject);
         } catch (err) {
             console.log(err);
-            return setTimeout(() => renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, callback), 2000);
+            return setTimeout(() => renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, callback), 10000);
         }
         updateMmr(playerObject, steamId);
         let heroRoles = {
@@ -213,9 +213,8 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
             Pusher: 0,
             Escape: 0,
         };
-        for (let matchIndex = 0; matchIndex < result.length; matchIndex++) {
-            let match = result[matchIndex];
-            new Promise(resolve => {
+        let matches = result.map((match, matchIndex, result) => {
+            return new Promise(resolve => {
                 getMatchDetails(match.match_id, details => resolve(details));
             }).then(details => {
                 let kda = 'N/A';
@@ -251,8 +250,10 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
                     return setTimeout(() => renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, callback), 10000);
                 }
             });            
-        }
-        Vue.set(playerObject, 'hero_roles', heroRoles);
+        });
+        Promise.all(matches).then(() => 
+            Vue.set(playerObject, 'hero_roles', JSON.stringify(heroRoles))
+        );
     });
 }
 

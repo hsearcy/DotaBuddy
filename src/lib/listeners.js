@@ -59,9 +59,9 @@ document.addEventListener("keydown", function (e) {
 });
 
 $('.players').mouseenter(function() {
-    $(this).find('.kda').hide();
-    $(this).find('.gpm-xpm').fadeIn('fast');
+    $(this).find('.kda, .mmr-stats').hide();
+    $(this).find('.gpm-xpm, .role-stats').fadeIn('fast');
 }).mouseleave(function() {
-    $(this).find('.gpm-xpm').hide();
-    $(this).find('.kda').fadeIn('fast');
+    $(this).find('.gpm-xpm, .role-stats').hide();
+    $(this).find('.kda, .mmr-stats').fadeIn('fast');
 });
