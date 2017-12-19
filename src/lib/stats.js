@@ -254,7 +254,7 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
         Promise.all(matches).then(() => {
             let sortedRoleKeys = Object.keys(heroRoles).sort((a,b) => { return heroRoles[b]-heroRoles[a]; });
             heroRoles = sortedRoleKeys.map((key) => { 
-                return { [key]: heroRoles[key] };
+                return { name: [key], frequency: heroRoles[key] };
               });
             Vue.set(playerObject, 'hero_roles', JSON.stringify(heroRoles));
         });

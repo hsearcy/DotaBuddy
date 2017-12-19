@@ -56,7 +56,7 @@
                                 <li v-for="player in players" class="player">
                                     <div class="collapsible-header primary" :class="[player.status == 15 ? '' : 'active']"><img class="circle" :src="player.user.avatarmedium"/>{{ player.user.personaname }} <a class="secondary-text" :href="player.user.profileurl" target="_blank">[Steam]</a> <a class="secondary-text" :href="'http://www.dotabuff.com/players/' + player.accountId" target="_blank">[Dotabuff]</a> <a class="secondary-text" :href="'http://opendota.com/players/' + player.accountId" target="_blank">[OpenDota]</a>
                                         <span class="mmr-stats"><span class="material-icons">person</span> {{ player.solo_mmr }} <span class="material-icons">people</span> {{ player.party_mmr }} <span class="material-icons">help</span> {{ player.estimated_mmr }}</span>
-                                        <span class="role-stats">{{ player.hero_roles }}</span>
+                                        <span v-for="role in player.hero_roles" class="role-stats">{{ role.name }}: {{ role.frequency }}</span>
                                     </div>
                                     <div class="collapsible-body">
                                         <div v-for="hero in player.heroes" :class="[hero.match_id === undefined ? 'hidden' : '']">
