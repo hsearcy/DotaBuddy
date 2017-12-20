@@ -210,3 +210,11 @@ $heroWidth: 205px / 2;
         display: block;
     }
 }
+
+.Carry:before {
+    content: "\E854";
+}
+
+.Disabler:before {
+    content: "\E914";
+}
