@@ -211,10 +211,38 @@ $heroWidth: 205px / 2;
     }
 }
 
-.Carry:before {
-    content: "\E854";
+.material-icons.Carry:before {
+    content: "\e8dc";
 }
 
-.Disabler:before {
+.material-icons.Disabler:before {
+    content: "\e8dc";
+}
+
+.material-icons.Initiator:before {
+    content: "\E914";
+}
+
+.material-icons.Jungler:before {
+    content: "\E914";
+}
+
+.material-icons.Support:before {
+    content: "\E914";
+}
+
+.material-icons.Durable:before {
+    content: "\E914";
+}
+
+.material-icons.Nuker:before {
+    content: "\E914";
+}
+
+.material-icons.Pusher:before {
+    content: "\E914";
+}
+
+.material-icons.Escape:before {
     content: "\E914";
 }
