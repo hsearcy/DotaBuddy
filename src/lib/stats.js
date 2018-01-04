@@ -254,7 +254,7 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
         Promise.all(matches).then(() => {
             let sortedRoleKeys = Object.keys(heroRoles).sort((a,b) => { return heroRoles[b]-heroRoles[a]; });
             heroRoles = sortedRoleKeys.map((key) => { 
-                return { name: [key], frequency: heroRoles[key] };
+                return { name: [key], frequency: heroRoles[key], weight: (400 + heroRoles[key]*50) };
               });
             Vue.set(playerObject, 'hero_roles', heroRoles);
         });
@@ -285,7 +285,7 @@ function getMatchDetails(matchId, callback) {
     if (matchDetails.hasOwnProperty(matchId)) {
         callback(matchDetails[matchId]);
     } else {
-        request.get('https://api.opendota.com/api/matches/'+matchId, (err, response, body) => {
+        request.get('https://api.opendota.com/api/matches/' + matchId, (err, response, body) => {
             if (err || response.statusCode != 200) return setTimeout(function() {
                 getMatchDetails(matchId, callback);
             }, 2000);

@@ -211,38 +211,26 @@ $heroWidth: 205px / 2;
     }
 }
 
-.material-icons.Carry:before {
-    content: "\e8dc";
+.Carry {
+    color: rgb(26, 160, 9);
 }
 
-.material-icons.Disabler:before {
-    content: "\e8dc";
+.Jungler {
+    color:rgb(33, 114, 33);
 }
 
-.material-icons.Initiator:before {
-    content: "\E914";
+.Support {
+    color: rgb(45, 45, 255);
 }
 
-.material-icons.Jungler:before {
-    content: "\E914";
+.Durable {
+    color: rgba(182, 24, 24, 0.801);
 }
 
-.material-icons.Support:before {
-    content: "\E914";
+.Nuker {
+    color: rgb(79, 125, 250);
 }
 
-.material-icons.Durable:before {
-    content: "\E914";
-}
-
-.material-icons.Nuker:before {
-    content: "\E914";
-}
-
-.material-icons.Pusher:before {
-    content: "\E914";
-}
-
-.material-icons.Escape:before {
-    content: "\E914";
+.Escape {
+    color: rgb(99, 170, 90);
 }
