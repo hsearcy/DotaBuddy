@@ -254,11 +254,16 @@ function renderMatchHistory(numPlayers, playerIndex, steamId, player, radiant, c
         Promise.all(matches).then(() => {
             let sortedRoleKeys = Object.keys(heroRoles).sort((a,b) => { return heroRoles[b]-heroRoles[a]; });
             heroRoles = sortedRoleKeys.map((key) => { 
-                return { name: [key], frequency: heroRoles[key], weight: (400 + heroRoles[key]*50) };
+                return { name: [key], frequency: heroRoles[key], weight: setFontWeight(heroRoles[key]) };
               });
             Vue.set(playerObject, 'hero_roles', heroRoles);
         });
     });
+}
+
+function setFontWeight(frequency) {
+    let weight = Math.floor((100 + (frequency*50))/100) * 100;
+    return Math.min(900, weight);
 }
 
 function updateMmr(playerObject, steamId, fail) {
